@@ -127,6 +127,7 @@ Mỗi mục điều hướng có icon riêng phù hợp với chức năng (ví 
 | Bảng/API | Admin | FrontDesk/Staff |
 |---|---|---|
 | Danh mục (loại lớp/gói học/ca học/họa cụ/giáo viên) | Toàn quyền | Chỉ đọc |
+| Cấu hình chung (`jas_app_setting`) | Toàn quyền | Chỉ đọc |
 | Học viên (`contact`) | Toàn quyền | Toàn quyền |
 | Chứng từ đang mở (đơn bán/phiếu nhập/phiếu điểm danh) | Toàn quyền | Toàn quyền |
 | Chứng từ đã ghi sổ | Chỉ đọc | Chỉ đọc |
@@ -136,6 +137,8 @@ Mỗi mục điều hướng có icon riêng phù hợp với chức năng (ví 
 | Thực thi `jas_Reconcile` (Đối Soát) | Có | **Không** |
 
 Nguyên tắc nền tảng: chứng từ Đã Ghi Sổ và Sổ Cái **không ai có quyền Tạo/Sửa trực tiếp** — chỉ có thể ghi qua Custom API tương ứng, được thực thi (enforce) thật ở tầng nền tảng Dataverse, không chỉ ẩn nút trên giao diện.
+
+FrontDesk/Staff giữ quyền **Chỉ đọc** (không phải chặn hoàn toàn) trên Giáo Viên và Cấu hình chung vì cả hai đều được đọc trực tiếp trong các nghiệp vụ hằng ngày của FrontDesk — chọn Giáo viên phụ trách/Trợ giảng khi Điểm danh, hiển thị 2 cột này ở Lịch Sử Điểm Danh, và kiểm tra cờ "Cho phép học nợ"/gói học thử lúc điểm danh. Chỉ có **thao tác Tạo/Sửa/Xoá** (quản lý danh sách Giáo Viên, chỉnh Cấu Hình) mới giới hạn cho Admin — thực thi thật ở tầng Security Role Dataverse, không chỉ ẩn tab "Giáo Viên"/"Cấu Hình" trên giao diện Admin Center.
 
 ## 6. An toàn thao tác (confirm dialog)
 
