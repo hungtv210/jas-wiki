@@ -11,6 +11,7 @@
 | [01 — Yêu Cầu Nghiệp Vụ (Requirements)](01-requirements.md) | Chủ trung tâm, người phụ trách nghiệp vụ | Yêu cầu chức năng, quy tắc nghiệp vụ, phạm vi hệ thống |
 | [02 — Kiến Trúc & Thiết Kế (Design)](02-design.md) | Người phát triển, quản trị hệ thống | Mô hình dữ liệu, Custom API/Plugin, các trang GenUX, phân quyền |
 | [03 — Hướng Dẫn Sử Dụng (User Guide)](03-user-guide.md) | Nhân viên phụ trách điểm danh / lễ tân, quản lý trung tâm | Hướng dẫn từng nghiệp vụ theo use case, có ảnh chụp luồng thao tác |
+| [04 — Bộ Test Case UAT](04-uat-test-cases.md) | Người kiểm thử nghiệm thu (UAT) | 109 test case theo từng nghiệp vụ + phân quyền, dùng để nghiệm thu trước khi vận hành thật |
 
 ## Hệ thống dùng để làm gì?
 

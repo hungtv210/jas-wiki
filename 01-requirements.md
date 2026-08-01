@@ -12,6 +12,8 @@ JoiArt Studio là trung tâm dạy vẽ/nghệ thuật cần một hệ thống 
 - Công nợ học viên (đã mua nhưng chưa thanh toán hết).
 - Đội ngũ giáo viên (toàn thời gian/bán thời gian) phụ trách và trợ giảng từng buổi học.
 - Báo cáo doanh thu, cảnh báo vận hành (sắp hết buổi, công nợ).
+- Lương giáo viên (bảng lương theo kỳ, gồm lương cứng/theo buổi/thưởng/khấu trừ) và dòng tiền mặt tổng hợp của trung tâm (thu từ học viên, chi lương, chi mua hàng).
+- Sửa sai cho các chứng từ ghi sổ nhầm (hủy 1 buổi điểm danh sai, đảo ngược đơn bán/phiếu nhập đã khóa sổ) mà không phá vỡ nguyên tắc chứng từ đã ghi sổ là bất biến.
 
 ## 2. Phạm vi hệ thống
 
@@ -25,15 +27,20 @@ JoiArt Studio là trung tâm dạy vẽ/nghệ thuật cần một hệ thống 
 - Học nợ buổi học (tùy chọn bật/tắt): cho phép điểm danh dù đã hết buổi, số buổi còn lại có thể âm.
 - Thanh toán công nợ (toàn phần hoặc từng phần).
 - Đổi trạng thái học của một gói đã đăng ký (Đang học/Tạm ngưng/Đã hủy — "Hoàn thành" chỉ do hệ thống tự set khi hết buổi).
-- Tra cứu chứng từ đã ghi sổ và sổ cái (bút toán tồn kho, giá vốn, buổi học, công nợ).
+- Tra cứu chứng từ đã ghi sổ và sổ cái (bút toán tồn kho, giá vốn, buổi học, công nợ, lương, tiền mặt).
 - Đối soát (tính lại số liệu cache từ sổ cái) — chỉ Admin.
 - Báo cáo: doanh thu theo tháng, số học viên đang hoạt động, học viên sắp hết buổi, công nợ chưa thu, phân bổ theo loại lớp.
+- Bảng lương giáo viên: tạo/ghi sổ bảng lương theo kỳ (lương cứng, theo buổi, thưởng, khấu trừ), tra cứu sổ nhân viên (Employee Ledger).
+- Dòng tiền mặt: dashboard tổng hợp thu/chi tiền mặt của trung tâm (thu học viên, chi lương, chi mua hàng).
+- Hủy 1 buổi điểm danh sai (FrontDesk hủy được trong ngày ghi sổ, Admin hủy được mọi lúc) — hoàn lại buổi vào số buổi còn lại của gói học, không xóa bản ghi điểm danh gốc.
+- Đảo ngược đơn bán hàng/phiếu nhập họa cụ đã ghi sổ (chỉ Admin) — hoàn tồn kho/công nợ/ghi danh về trạng thái trước khi ghi sổ, mở khóa lại chứng từ gốc để sửa và ghi sổ lại; bản ghi Đã Ghi Sổ gốc vẫn được giữ nguyên, không xóa.
 
 ### 2.2. Ngoài phạm vi (đã chốt không làm)
 - Không có lịch học cố định theo buổi/phòng (`class_session`) — học viên có thể học bất kỳ ca nào còn buổi, không ràng buộc theo thời khóa biểu cố định.
 - Không có vai trò bảo mật "Giáo viên" riêng trong hệ thống (giáo viên là dữ liệu quản lý, không phải người dùng đăng nhập hệ thống).
 - Không chuẩn hóa danh mục Nhà cung cấp (nhập tự do dạng văn bản trên phiếu mua hàng).
-- Không hỗ trợ hoàn trả/hủy chứng từ đã ghi sổ (điều chỉnh sau khi ghi sổ nằm ngoài phạm vi).
+- Không hỗ trợ đảo ngược/hủy bảng lương đã ghi sổ (chỉ Đơn Bán Hàng, Phiếu Nhập Họa Cụ, và Điểm Danh có nghiệp vụ đảo ngược — xem mục 3.2–3.4).
+- Không có nghiệp vụ "hủy khóa học đang học" riêng (khác với Đổi trạng thái học ở mục 2.1 — đó chỉ đổi cờ trạng thái, không hoàn buổi/tồn kho/công nợ).
 
 ## 3. Yêu cầu chức năng theo nghiệp vụ
 
@@ -56,6 +63,7 @@ JoiArt Studio là trung tâm dạy vẽ/nghệ thuật cần một hệ thống 
 - Không cho điểm danh nếu gói học không ở trạng thái "Đang học" (Suspended/Cancelled/Completed).
 - Mặc định không cho điểm danh nếu đã hết buổi (remaining ≤ 0), trừ khi bật cấu hình **"Cho phép học nợ"** — khi đó số buổi còn lại có thể xuống âm, gói học vẫn giữ trạng thái "Đang học" (không tự động Hoàn thành).
 - Giáo viên phụ trách và trợ giảng được lưu theo từng buổi điểm danh và hiển thị lại trong sổ buổi học của học viên và trong lịch sử điểm danh — phục vụ tra cứu ai đã dạy buổi nào.
+- **Hủy điểm danh** (sửa sai khi điểm danh nhầm): trên mỗi dòng "Sổ Buổi Học" chưa bị hủy, có nút **Hủy điểm danh** — hoàn 1 buổi vào số buổi còn lại của gói học, tự chuyển gói học từ Hoàn thành về lại Đang học nếu nhờ hoàn buổi mà còn buổi > 0. Bản ghi điểm danh gốc **không bị xóa**, chỉ được đánh dấu "Đã bị hủy" và có thêm 1 bút toán hoàn buổi liên kết ngược lại bản ghi gốc (phục vụ truy vết sau này). Nhân viên FrontDesk chỉ hủy được điểm danh **ghi sổ trong cùng ngày**; Admin hủy được **bất kỳ lúc nào**.
 
 ### 3.3. Bán hàng (Đơn Bán Hàng)
 - Một đơn bán hàng gắn với **đúng 1 học viên**, được tạo từ hồ sơ học viên đó (không tạo đơn "vô chủ").
@@ -63,10 +71,12 @@ JoiArt Studio là trung tâm dạy vẽ/nghệ thuật cần một hệ thống 
 - Dòng họa cụ có thể đánh dấu **"Cấp miễn phí"** (free issue) — vẫn trừ tồn kho nhưng không tính vào số tiền phải thu.
 - Không cho ghi sổ (Post) nếu: chưa có dòng nào, có dòng gói học nhưng thiếu học viên, hoặc có dòng họa cụ vượt quá tồn kho hiện có.
 - Sau khi ghi sổ: chứng từ khóa, không sửa/xóa dòng được nữa; mỗi gói học trong đơn trở thành 1 lượt đăng ký mới (còn nguyên số buổi theo gói); tồn kho họa cụ giảm tương ứng; công nợ học viên tăng theo số tiền phải thu (không tính phần cấp miễn phí); nếu đã thu tiền ngay, công nợ giảm tương ứng.
+- **Đảo ngược ghi sổ** (chỉ Admin): dùng khi đơn bán bị ghi sổ nhầm. Hệ thống hoàn tồn kho họa cụ, hủy các lượt đăng ký gói học liên quan (chuyển sang Đã hủy), điều chỉnh lại công nợ học viên, rồi **mở khóa lại đúng đơn bán gốc** (không tạo đơn mới) để sửa và ghi sổ lại. Bản ghi Đã Ghi Sổ gốc vẫn được giữ lại nguyên vẹn (đánh dấu "Đã đảo ngược"), không xóa. **Chặn đảo ngược** nếu có bất kỳ lượt đăng ký nào trong đơn đã bị điểm danh ít nhất 1 buổi — phải hủy hết các điểm danh liên quan trước (xem mục 3.2).
 
 ### 3.4. Mua hàng (Phiếu Nhập Họa Cụ)
 - Phiếu nhập có nhiều dòng, mỗi dòng là 1 họa cụ + số lượng + giá vốn.
-- Sau khi ghi sổ: chứng từ khóa; tồn kho họa cụ tăng theo số lượng; giá vốn (last cost) của họa cụ cập nhật theo giá nhập gần nhất.
+- Sau khi ghi sổ: chứng từ khóa; tồn kho họa cụ tăng theo số lượng; giá vốn (last cost) của họa cụ cập nhật theo giá nhập gần nhất; ghi 1 khoản chi vào Dòng Tiền Mặt (xem mục 3.11).
+- **Đảo ngược ghi sổ** (chỉ Admin): trừ lại tồn kho theo đúng số đã nhập, bù lại khoản chi tương ứng trong Dòng Tiền Mặt, rồi **mở khóa lại đúng phiếu nhập gốc** để sửa và ghi sổ lại. Bản ghi Đã Ghi Sổ gốc vẫn được giữ lại (đánh dấu "Đã đảo ngược"), không xóa. **Chặn đảo ngược** nếu tồn kho hiện tại của bất kỳ họa cụ nào trong phiếu không còn đủ để trừ lại (do hàng đã được bán bớt sang chỗ khác) — phải xử lý phần đã bán trước.
 
 ### 3.5. Quản lý công nợ / thanh toán
 - Mỗi học viên có 1 số dư công nợ tổng hợp (`Công nợ`), tăng khi bán hàng ghi nợ, giảm khi thu tiền.
@@ -98,22 +108,36 @@ JoiArt Studio là trung tâm dạy vẽ/nghệ thuật cần một hệ thống 
 - **Sổ Cái**: 4 sổ cái chỉ đọc — Sổ cái họa cụ (nhập/xuất kho), bút toán giá trị (giá vốn/doanh thu), sổ buổi học, sổ công nợ học viên.
 - **Lịch Sử Điểm Danh**: tra cứu ai đã điểm danh, ca nào, giáo viên/trợ giảng nào, theo ngày.
 
+### 3.10. Quản lý lương giáo viên (Bảng Lương)
+- Bảng lương gắn với **đúng 1 giáo viên**, theo kỳ lương + ngày chi cụ thể.
+- Mỗi dòng bảng lương là 1 trong 4 loại khoản: **Lương cứng**, **Theo buổi**, **Thưởng**, **Khấu trừ** (khoản Khấu trừ nhập số tiền âm — đây là loại dòng duy nhất trong toàn hệ thống cho phép số tiền âm).
+- Khi chọn giáo viên (hoặc đổi loại khoản), hệ thống tự gợi ý số tiền theo "Lương cứng mặc định"/"Đơn giá/buổi mặc định" đã cấu hình sẵn cho giáo viên đó (mục 3.7) — chỉ là gợi ý ban đầu, người dùng có thể sửa lại, không tính toán tự động.
+- Sau khi ghi sổ: chứng từ khóa; ghi 1 bút toán vào **Sổ Nhân Viên** (Employee Ledger) cho giáo viên; ghi 1 khoản chi vào **Dòng Tiền Mặt** (mục 3.11).
+- Chưa hỗ trợ đảo ngược/hủy bảng lương đã ghi sổ (xem mục 2.2).
+
+### 3.11. Dòng tiền mặt (Cash Flow)
+- Dashboard chỉ đọc, tổng hợp dòng tiền mặt thực tế của trung tâm — không phải công nợ (khác với mục 3.5).
+- Hiển thị: Tổng Thu, Tổng Chi, Dòng Tiền Ròng của tháng hiện tại; biểu đồ Thu/Chi theo tháng (vài tháng gần nhất); danh sách giao dịch gần đây.
+- Nguồn dữ liệu tự động: thu tiền học viên (mục 3.5), chi lương giáo viên (mục 3.10), chi mua hàng họa cụ (mục 3.4) — người dùng không nhập tay vào đây.
+
 ## 4. Quy tắc nghiệp vụ quan trọng (đã chốt, không thay đổi tùy tiện)
 
 1. Một buổi học không bắt buộc theo lịch cố định — học viên còn buổi thì điểm danh được ở bất kỳ ca nào.
 2. Một học viên có thể học nhiều ca trong cùng một ngày; chỉ chặn trùng khi cùng gói + cùng ngày + cùng ca.
 3. Dòng điểm danh lỗi (gói không hoạt động/hết buổi/trùng) chỉ bị **bỏ qua dòng đó**, các dòng hợp lệ khác trong cùng lượt vẫn được ghi sổ bình thường — không hủy toàn bộ vì 1 dòng lỗi.
 4. Buổi học thử ghi nhận có mặt nhưng tuyệt đối không trừ vào số buổi đã mua thật.
-5. Chứng từ đã ghi sổ (Posted) là bất biến — không sửa/xóa, chỉ có thể tác động qua các nghiệp vụ điều chỉnh được thiết kế riêng (thu tiền, đổi trạng thái học).
+5. Chứng từ đã ghi sổ (Posted) là bất biến — không sửa/xóa, chỉ có thể tác động qua các nghiệp vụ điều chỉnh được thiết kế riêng (thu tiền, đổi trạng thái học, hủy điểm danh, đảo ngược ghi sổ đơn bán/phiếu nhập). Kể cả các nghiệp vụ điều chỉnh này cũng **không sửa/xóa bản ghi gốc** — chỉ tạo thêm bút toán bù trừ (hoàn buổi, điều chỉnh tồn kho, hoàn công nợ) và đánh dấu bản ghi gốc là đã được xử lý.
 6. Chỉ Admin được thực hiện Đối Soát (Reconcile) — nghiệp vụ tính lại số liệu toàn hệ thống, không dành cho nhân viên thường.
 7. Giáo viên phụ trách là bắt buộc trên mọi lượt điểm danh; trợ giảng luôn là tùy chọn.
+8. Đảo ngược ghi sổ (đơn bán/phiếu nhập) chỉ dành cho Admin; hủy điểm danh dành cho cả 2 vai trò nhưng FrontDesk chỉ hủy được điểm danh ghi sổ **trong cùng ngày**, quá ngày đó phải nhờ Admin xử lý.
 
 ## 5. Người dùng & vai trò
 
 | Vai trò | Ai sử dụng | Có thể làm |
 |---|---|---|
-| Admin | Chủ trung tâm/quản lý | Mọi nghiệp vụ + Đối Soát |
-| FrontDesk/Staff | Nhân viên lễ tân, phụ trách điểm danh | Mọi nghiệp vụ hằng ngày (học viên, điểm danh, bán/mua hàng, thu tiền, xem báo cáo) — trừ Đối Soát |
+| Admin | Chủ trung tâm/quản lý | Mọi nghiệp vụ + Đối Soát + Đảo ngược ghi sổ (đơn bán/phiếu nhập) + Hủy điểm danh (mọi thời điểm) |
+| FrontDesk/Staff | Nhân viên lễ tân, phụ trách điểm danh | Mọi nghiệp vụ hằng ngày (học viên, điểm danh, bán/mua hàng, thu tiền, bảng lương, xem báo cáo) + Hủy điểm danh **trong ngày** — trừ Đối Soát và Đảo ngược ghi sổ |
 
 Xem thiết kế kỹ thuật chi tiết tại [02 — Kiến Trúc & Thiết Kế](02-design.md).
 Xem hướng dẫn thao tác từng bước tại [03 — Hướng Dẫn Sử Dụng](03-user-guide.md).
+Xem bộ test case nghiệm thu tại [04 — Bộ Test Case UAT](04-uat-test-cases.md).
