@@ -44,7 +44,7 @@ sánh hành vi giữa 2 vai trò.
 | Nhóm | Chủ đề | Số lượng | Tham chiếu |
 |---|---|---|---|
 | [UAT-STU](#uat-stu--quản-lý-học-viên) | Quản lý học viên | 8 | User Guide mục 2 |
-| [UAT-DD](#uat-dd--điểm-danh) | Điểm danh | 18 | User Guide mục 3 |
+| [UAT-DD](#uat-dd--điểm-danh) | Điểm danh (kể cả Chuyển buổi/Ghi Nợ Tạm/Gán khóa học) | 27 | User Guide mục 3 |
 | [UAT-SO](#uat-so--đơn-bán-hàng) | Đơn Bán Hàng | 15 | User Guide mục 4 |
 | [UAT-PC](#uat-pc--phiếu-nhập-họa-cụ) | Phiếu Nhập Họa Cụ | 9 | User Guide mục 5 |
 | [UAT-PR](#uat-pr--bảng-lương) | Bảng Lương | 8 | User Guide mục 6 |
@@ -54,9 +54,15 @@ sánh hành vi giữa 2 vai trò.
 | [UAT-LED](#uat-led--sổ-cái) | Sổ Cái | 9 | Design mục 4 (`entries.tsx`) |
 | [UAT-STAT](#uat-stat--thống-kê) | Thống Kê | 4 | User Guide mục 10 |
 | [UAT-RC](#uat-rc--role-center--bảng-điều-khiển) | Role Center | 3 | User Guide mục 10 |
-| [UAT-PERM](#uat-perm--phân-quyền-bất-biến-chứng-từ--an-toàn-thao-tác) | Phân quyền & an toàn thao tác | 10 | Design mục 5, 6 |
+| [UAT-PERM](#uat-perm--phân-quyền-bất-biến-chứng-từ--an-toàn-thao-tác) | Phân quyền & an toàn thao tác | 11 | Design mục 5, 6 |
+| [UAT-ITM](#uat-itm--nhóm-hàng-hóa--danh-mục-phân-cấp-hàng-hóa) | Nhóm Hàng Hóa/Danh Mục (mới) | 9 | Chưa có trong User Guide |
+| [UAT-PS](#uat-ps--lịch-học-mong-muốn--lịch-học-dự-kiến) | Lịch Học Mong Muốn/Dự Kiến (mới) | 7 | Chưa có trong User Guide |
+| [UAT-TRP](#uat-trp--hiệu-suất-vận-hành) | Hiệu Suất Vận Hành (mới) | 7 | Chưa có trong User Guide |
 
-**Tổng cộng: 109 test case.**
+**Tổng cộng: 142 test case** (109 case gốc + 9 case UAT-DD mới cho Chuyển buổi/Ghi Nợ Tạm/Gán khóa học +
+1 case UAT-PERM mới + 23 case cho 3 tính năng mới UAT-ITM/UAT-PS/UAT-TRP). Số ID cũ (UAT-*-01..NN gốc) giữ
+nguyên không đổi để đối chiếu — riêng UAT-DD-10 đã cập nhật lại nội dung vì hành vi gốc không còn đúng kể
+từ tính năng Ghi Nợ Tạm (xem ghi chú ngay tại case đó).
 
 ---
 
@@ -215,11 +221,15 @@ sánh hành vi giữa 2 vai trò.
 - **Đạt/Không đạt**: ☐ Đạt ☐ Không đạt
 - **Ghi chú**:
 
-#### UAT-DD-10 — Điểm danh học nợ khi "Cho phép học nợ" đang bật
+#### UAT-DD-10 — Gói đã hết buổi bị loại khỏi Dropdown chọn khóa (kể cả khi bật "Cho phép học nợ")
+> **Hành vi đã đổi kể từ tính năng "Ghi Nợ Tạm"** (xem UAT-DD-19 trở đi) — trước đây "Cho phép học nợ"
+> cho phép chọn tay 1 gói đã hết buổi để nó bị trừ âm; từ nay "Cho phép học nợ" **chỉ** kích hoạt fallback
+> tự động sang khóa Ghi Nợ Tạm khi TẤT CẢ gói đều hết buổi — không còn cách nào chọn tay 1 gói thật đã hết
+> buổi để trừ âm nữa (tránh nhân viên đoán nhầm khóa).
 - **Vai trò**: Admin (bật cấu hình), Cả hai (điểm danh)
-- **Điều kiện tiên quyết**: Thiết Lập → Cấu Hình đã **bật** "Cho phép học nợ"; học viên TEST có gói remaining = 0
-- **Bước thực hiện**: Điểm danh học viên đó với gói đã hết buổi.
-- **Kết quả mong đợi**: Vẫn điểm danh được, số buổi còn lại hiển thị **số âm** (ví dụ "-1 buổi"), gói học vẫn giữ trạng thái "Đang học" (không tự chuyển "Hoàn thành").
+- **Điều kiện tiên quyết**: Thiết Lập → Cấu Hình đã **bật** "Cho phép học nợ"; học viên TEST có 1 gói remaining = 0 VÀ ít nhất 1 gói khác remaining > 0
+- **Bước thực hiện**: Mở popup Điểm danh cho học viên đó → quan sát Dropdown "Khóa đã mua".
+- **Kết quả mong đợi**: Gói đã hết buổi **không xuất hiện** trong danh sách chọn được — chỉ gói còn buổi > 0 hiển thị, bất kể "Cho phép học nợ" đang bật hay tắt.
 - **Kết quả thực tế**:
 - **Đạt/Không đạt**: ☐ Đạt ☐ Không đạt
 - **Ghi chú**:
@@ -291,6 +301,87 @@ sánh hành vi giữa 2 vai trò.
 - **Kết quả mong đợi**: Gói học tự quay lại trạng thái "Đang học" vì lại có buổi > 0.
 - **Kết quả thực tế**:
 - **Đạt/Không đạt**: ☐ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-DD-19 — Điểm danh khi hết buổi ở TẤT CẢ gói, "Cho phép học nợ" đang bật → tự động vào Ghi Nợ Tạm
+- **Vai trò**: Cả hai
+- **Điều kiện tiên quyết**: "Cho phép học nợ" đang **bật**; học viên TEST có 1 hoặc nhiều gói, tất cả đều remaining = 0
+- **Bước thực hiện**: Mở popup Điểm danh cho học viên đó.
+- **Kết quả mong đợi**: Dropdown "Khóa đã mua" biến mất, thay bằng cảnh báo **"Học viên đã hết buổi ở tất cả khóa học — buổi điểm danh này sẽ ghi vào Ghi Nợ Tạm, cần vào Chi tiết buổi để Gán khóa học đúng sau khi xác nhận."**; vẫn bấm Điểm danh được bình thường → thông báo thành công nêu rõ đã ghi vào Ghi Nợ Tạm, số buổi ghi nợ hiển thị số âm.
+- **Kết quả thực tế**: Verify qua Chrome MCP với tài khoản role "JoiArt Pro - Admin" (test01@JAStudio.onmicrosoft.com, không phải sysadmin) và dữ liệu test dùng-1-lần: đúng như mong đợi — cảnh báo hiện đúng, không có Dropdown, điểm danh thành công, "Tổng buổi còn lại: -1", thông báo đúng nội dung.
+- **Đạt/Không đạt**: ☒ Đạt ☐ Không đạt
+- **Ghi chú**: Phát hiện kèm 1 lỗ hổng quyền khi test bằng tài khoản role thật (không phải sysadmin) — xem UAT-PERM-11.
+
+#### UAT-DD-20 — Điểm danh khi hết buổi ở TẤT CẢ gói, "Cho phép học nợ" đang TẮT → vẫn bị chặn
+- **Vai trò**: Cả hai
+- **Điều kiện tiên quyết**: "Cho phép học nợ" đang **tắt**; học viên TEST có tất cả gói remaining = 0
+- **Bước thực hiện**: Mở popup Điểm danh cho học viên đó.
+- **Kết quả mong đợi**: Giữ nguyên hành vi UAT-DD-09 — cảnh báo "Học viên không có gói học nào đang hoạt động và còn buổi", không điểm danh được, không có fallback Ghi Nợ Tạm nào (Ghi Nợ Tạm chỉ dùng khi allowNegative bật).
+- **Kết quả thực tế**: Verify qua API — với allowNegative=false, `jas_PostAttendance` trên gói remaining=0 trả lỗi chặn đúng như UAT-DD-09; không có đường nào tạo entry Ghi Nợ Tạm khi tắt học nợ (`isDebtFallback` phụ thuộc `allowNegative` ở tầng client, và tầng server `jas_PostAttendance` cũng tự chặn remaining≤0 khi !allowNegative bất kể enrollment nào).
+- **Đạt/Không đạt**: ☒ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-DD-21 — Gán khóa học (Assign) từ Ghi Nợ Tạm sang khóa thật thành công
+- **Vai trò**: Cả hai
+- **Điều kiện tiên quyết**: Có 1 bút toán đang ở Ghi Nợ Tạm (kết quả UAT-DD-19); học viên có ≥ 1 khóa thật khác đang Active còn buổi > 0
+- **Bước thực hiện**: Vào Sổ Buổi Học → bấm **Chi tiết** trên dòng Ghi Nợ Tạm → bấm nút **"Gán khóa học"** (khác nút "Chuyển sang khóa học khác") → chọn 1 khóa thật ở Dropdown "Gán vào khóa học" → bấm **Xác nhận gán**.
+- **Kết quả mong đợi**: Thành công; dòng sổ cái **CŨ được cập nhật tại chỗ** (không tạo dòng mới, không có dòng Hoàn Buổi) — `Khóa học bị trừ buổi` đổi từ "Ghi Nợ Tạm" sang khóa thật vừa chọn; Ghi Nợ Tạm trả lại đúng 1 buổi (về 0 nếu chỉ có 1 buổi ghi nợ); khóa đích giảm đúng 1 buổi.
+- **Kết quả thực tế**: Verify đầy đủ qua cả PowerShell (assert số dòng sổ cái không đổi, đúng id cũ, `jas_is_reassigned=true`, `jas_reassigned_from_enrollment` đúng) VÀ qua Chrome MCP thật (bấm Xác nhận gán thật với dữ liệu test dùng-1-lần) — khớp đúng 100% kết quả mong đợi.
+- **Đạt/Không đạt**: ☒ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-DD-22 — Gán khóa học không có khóa đích hợp lệ
+- **Vai trò**: Cả hai
+- **Điều kiện tiên quyết**: Bút toán đang ở Ghi Nợ Tạm; học viên KHÔNG còn khóa thật nào khác đang Active còn buổi
+- **Bước thực hiện**: Mở Chi tiết bút toán đó → bấm "Gán khóa học".
+- **Kết quả mong đợi**: Dropdown hiện text "Học viên không còn khóa học nào khác đủ điều kiện để gán vào.", nút "Xác nhận gán" bị mờ (disabled).
+- **Kết quả thực tế**: Đã đọc code `eligibleTargets`/`SessionDetailDialog` — filter loại đúng: Active-only, khác Ghi Nợ Tạm, khác gói học thử, còn buổi (trừ khi allowNegative); khi rỗng hiện đúng text disabled trên. Suy luận từ code + đã thấy nhánh UI này hoạt động đúng (đối xứng với "Chuyển sang khóa học khác" đã verify UI thật ở bản Transfer) — CHƯA click-through trực tiếp đúng kịch bản "0 khóa đích" bằng dữ liệu test riêng.
+- **Đạt/Không đạt**: ☒ Đạt ☐ Không đạt
+- **Ghi chú**: Verify gián tiếp qua code + suy luận đối xứng, không phải click-through UI trực tiếp cho đúng kịch bản này — nên double-check nhanh nếu cần chắc chắn tuyệt đối.
+
+#### UAT-DD-23 — Sau khi Gán, bút toán bất biến trở lại (nút đổi thành "Chuyển sang khóa học khác")
+- **Vai trò**: Cả hai
+- **Điều kiện tiên quyết**: Kết quả UAT-DD-21
+- **Bước thực hiện**: Mở lại Chi tiết đúng bút toán vừa Gán.
+- **Kết quả mong đợi**: `Khóa học bị trừ buổi` hiện đúng khóa thật vừa gán (không còn "Ghi Nợ Tạm"); nút đổi lại thành **"Chuyển sang khóa học khác"** (icon đổi khác Gán); nếu bấm gán tiếp (gọi thẳng API) phải bị chặn — dùng Transfer thay.
+- **Kết quả thực tế**: Verify qua Chrome MCP thật — đúng như mong đợi: "Khóa học bị trừ buổi: Buổi lẻ", nút đổi đúng lại "Chuyển sang khóa học khác". Verify riêng phần chặn API qua UAT-DD-27.
+- **Đạt/Không đạt**: ☒ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-DD-24 — Chuyển buổi điểm danh (Transfer) sang khóa học khác
+- **Vai trò**: Cả hai
+- **Điều kiện tiên quyết**: Có 1 bút toán Điểm Danh (Consumption) đã ghi NHẦM vào khóa A; học viên có khóa B khác đang Active còn buổi
+- **Bước thực hiện**: Mở Chi tiết bút toán → bấm **"Chuyển sang khóa học khác"** → chọn khóa B → bấm **Xác nhận chuyển**.
+- **Kết quả mong đợi**: Thành công; sổ điểm danh xuất hiện thêm 1 dòng **Hoàn Buổi** (+1, khóa A) và 1 dòng **Điểm Danh (Consumption)** mới (-1, khóa B) — giữ nguyên ngày điểm danh gốc; khóa A trở lại đúng số buổi trước đó, khóa B giảm đúng 1.
+- **Kết quả thực tế**: Đã verify đầy đủ end-to-end qua UI thật ở phiên làm việc trước (bấm Xác nhận chuyển thật, dữ liệu test dùng-1-lần: chuyển từ "Joyful Colors" sang "Anime", cả 2 khóa cập nhật đúng số buổi, console sạch lỗi).
+- **Đạt/Không đạt**: ☒ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-DD-25 — Transfer bị chặn khi khóa đích hết buổi và chưa bật "Cho phép học nợ"
+- **Vai trò**: Cả hai
+- **Điều kiện tiên quyết**: "Cho phép học nợ" đang tắt; khóa đích dự định chuyển tới có remaining = 0
+- **Bước thực hiện**: Mở Chi tiết 1 bút toán → bấm Chuyển sang khóa học khác → chọn khóa đích đã hết buổi (nếu Dropdown vẫn cho chọn) → Xác nhận chuyển.
+- **Kết quả mong đợi**: Khóa hết buổi bị loại khỏi Dropdown ngay từ đầu (cùng tiêu chí `eligibleTargets` như UAT-DD-22); nếu vẫn cố gọi API trực tiếp, plugin `jas_TransferAttendance` phải trả lỗi rõ ràng nêu tên khóa đích đã hết buổi.
+- **Kết quả thực tế**: Verify qua đọc code `TransferAttendancePlugin.cs` — có kiểm tra `if (!allowNegative && targetRemaining <= 0) throw ...` với message nêu rõ tên khóa. Verify được phần lọc Dropdown qua UI (đối xứng UAT-DD-22). Chưa gọi trực tiếp API để xác nhận message lỗi thật bằng dữ liệu test.
+- **Đạt/Không đạt**: ☒ Đạt ☐ Không đạt
+- **Ghi chú**: Verify chủ yếu qua code review, chưa test API trực tiếp với dữ liệu thật cho đúng kịch bản lỗi này.
+
+#### UAT-DD-26 — FrontDesk chỉ Transfer/Gán được buổi trong ngày, Admin thực hiện được mọi lúc
+- **Vai trò**: Cả hai
+- **Điều kiện tiên quyết**: Có 1 bút toán ghi sổ **không phải hôm nay**
+- **Bước thực hiện**: Đăng nhập FrontDesk → thử Chuyển/Gán khóa học trên bút toán đó. Đăng nhập Admin → thử lại.
+- **Kết quả mong đợi**: FrontDesk bị chặn (thông báo rõ lý do); Admin thực hiện được bình thường — cùng cơ chế `PostingHelpers.IsCallerAdminTier` đã áp dụng cho Hủy điểm danh (UAT-DD-15/16/17).
+- **Kết quả thực tế**: Đã xác nhận qua code — `TransferAttendancePlugin.cs`/`AssignEnrollmentPlugin.cs` không có kiểm tra ngày riêng cho theo-vai-trò (khác `TransferAttendancePlugin` gốc có `IsCallerAdminTier` check cho ngày không phải hôm nay, nhưng `AssignEnrollmentPlugin` KHÔNG copy lại đoạn check này — đây là điểm khác biệt thiết kế cần xác nhận lại với đội kỹ thuật, không phải lỗi tự phát hiện được qua test).
+- **Đạt/Không đạt**: ☐ Đạt ☐ Không đạt ☒ Không thực hiện được
+- **Ghi chú**: (1) Không có tài khoản chỉ-role-FrontDesk để đăng nhập kiểm tra trực tiếp (môi trường hiện chỉ có test01@ mang role Admin và admin@ mang System Administrator). (2) Đọc lại code phát hiện `AssignEnrollmentPlugin.cs` KHÔNG có đoạn kiểm tra "chỉ Admin mới Gán được bút toán không phải hôm nay" như `TransferAttendancePlugin`/`CancelAttendancePlugin` — cần xác nhận đây là chủ ý (vì Gán chỉ sửa 1 dòng đã có sẵn, không tạo bút toán mới nên rủi ro thấp hơn) hay là thiếu sót cần bổ sung.
+
+#### UAT-DD-27 — Gán khóa học (Assign) bị chặn nếu bút toán nguồn không còn ở Ghi Nợ Tạm
+- **Vai trò**: Cả hai
+- **Điều kiện tiên quyết**: Bút toán ĐÃ được gán sang khóa thật rồi (kết quả UAT-DD-21/23)
+- **Bước thực hiện**: Gọi trực tiếp `jas_AssignEnrollment` (hoặc thử lại thao tác Gán nếu UI vẫn cho phép) trên đúng bút toán đó.
+- **Kết quả mong đợi**: Bị chặn với thông báo rõ **"Bút toán này không nằm ở khóa Ghi Nợ Tạm — dùng chức năng Chuyển buổi (Transfer) để sửa."**
+- **Kết quả thực tế**: Verify qua PowerShell trực tiếp với dữ liệu test dùng-1-lần — gọi `jas_AssignEnrollment` trên bút toán đã gán sang khóa thật, nhận đúng lỗi chặn với đúng nội dung message trên.
+- **Đạt/Không đạt**: ☒ Đạt ☐ Không đạt
 - **Ghi chú**:
 
 ---
@@ -1041,6 +1132,228 @@ sánh hành vi giữa 2 vai trò.
 - **Kết quả mong đợi**: Dòng gốc **vẫn còn** trong lịch sử, chỉ chuyển nhãn "Đã bị hủy" — không biến mất khỏi danh sách.
 - **Kết quả thực tế**:
 - **Đạt/Không đạt**: ☐ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-PERM-11 — Lazy-create placeholder (gói học thử/Ghi Nợ Tạm) cần đúng quyền Create/Append trên bảng Posted
+- **Vai trò**: Cả hai (tài khoản role custom, KHÔNG phải System Administrator)
+- **Bối cảnh**: `ensureTrialEnrollment`/`ensureDebtEnrollment` (student.tsx) tạo trực tiếp `jas_posted_sales_header`/`jas_posted_sales_line` từ phía client (không qua Custom API/system service) khi placeholder (gói học thử/Ghi Nợ Tạm) chưa tồn tại — khác với mọi luồng Posted khác trong hệ thống (luôn qua plugin).
+- **Bước thực hiện**: Đăng nhập bằng tài khoản CHỈ mang role "JoiArt Pro - Admin" hoặc "JoiArt Pro - FrontDesk" (không có System Administrator) → thực hiện lần điểm danh ĐẦU TIÊN kích hoạt tạo mới placeholder (buổi học thử lần đầu, hoặc Ghi Nợ Tạm lần đầu — xem UAT-DD-19).
+- **Kết quả mong đợi**: Tạo thành công, không bị lỗi thiếu quyền.
+- **Kết quả thực tế**: **Phát hiện lỗi thật** khi test bằng tài khoản `test01@JAStudio.onmicrosoft.com` (role "JoiArt Pro - Admin", không phải sysadmin): lần đầu bị chặn `Missing prvCreatejas_posted_sales_line`, sau khi thêm quyền Create còn bị chặn tiếp `Missing prvAppendjas_posted_sales_line` (do lúc tạo `jas_posted_sales_line` tự set lookup `jas_header` trỏ về `jas_posted_sales_header`, cần thêm quyền Append trên chính bảng nguồn giữ lookup, khác AppendTo trên bảng đích). Đã sửa `scripts/deploy-security-roles.ps1`: thêm `Create`+`Append` (giữ nguyên KHÔNG có Write/Delete) cho `jas_posted_sales_header`/`jas_posted_sales_line` ở cả 2 role, deploy lại, retry thành công.
+- **Đạt/Không đạt**: ☒ Đạt (sau khi sửa) ☐ Không đạt
+- **Ghi chú**: Đây là lỗ hổng quyền tồn tại từ TRƯỚC (áp dụng cho cả tính năng gói học thử đã có sẵn), chỉ lộ ra vì lần này test bằng tài khoản role thật thay vì sysadmin — các lần deploy/verify trước của tính năng gói học thử đều dùng tài khoản `admin@JAStudio.onmicrosoft.com` (System Administrator, bỏ qua mọi kiểm tra quyền) nên không phát hiện được. **Khuyến nghị**: mọi UAT về sau nên ưu tiên dùng tài khoản role custom thay vì sysadmin để bắt được đúng loại lỗi này.
+
+---
+
+## UAT-ITM — Nhóm Hàng Hóa / Danh Mục (phân cấp Hàng Hóa)
+
+*(Vào: Admin Center → Thiết Lập → tab "Nhóm Hàng Hóa"/"Danh Mục"; và Danh Mục → Hàng Hóa — tính năng mới,
+chưa có trong User Guide bản hiện tại. Thay thế Choice phẳng `jas_category` cũ bằng phân cấp 2 tầng Nhóm
+Hàng Hóa → Danh Mục → Hàng Hóa.)*
+
+#### UAT-ITM-01 — CRUD Nhóm Hàng Hóa
+- **Vai trò**: Admin
+- **Bước thực hiện**: Thiết Lập → tab **Nhóm Hàng Hóa** → bấm **Thêm nhóm hàng hóa** → nhập Tên nhóm "TEST Nhóm UAT" + Mô tả tùy chọn → Lưu → sửa lại tên.
+- **Kết quả mong đợi**: Thêm/sửa thành công, xuất hiện ngay trong Dropdown "Nhóm hàng hóa" khi tạo Danh Mục mới.
+- **Kết quả thực tế**:
+- **Đạt/Không đạt**: ☐ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-ITM-02 — CRUD Danh Mục, bắt buộc chọn Nhóm Hàng Hóa
+- **Vai trò**: Admin
+- **Bước thực hiện**: Tab **Danh Mục** → bấm **Thêm danh mục** → thử để trống Nhóm hàng hóa trước khi Lưu → sau đó chọn 1 Nhóm → Lưu.
+- **Kết quả mong đợi**: Nút Lưu bị mờ cho tới khi cả Tên danh mục và Nhóm hàng hóa đều có giá trị; sau khi chọn đủ, lưu thành công, danh mục xuất hiện đúng dưới đúng Nhóm đã chọn.
+- **Kết quả thực tế**:
+- **Đạt/Không đạt**: ☐ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-ITM-03 — Ngừng dùng Nhóm Hàng Hóa ẩn khỏi Dropdown chọn khi tạo Danh Mục
+- **Vai trò**: Admin
+- **Điều kiện tiên quyết**: Có 1 Nhóm Hàng Hóa TEST (UAT-ITM-01)
+- **Bước thực hiện**: Ngừng dùng Nhóm đó (có hộp thoại xác nhận) → mở dialog Thêm danh mục mới → xem Dropdown Nhóm hàng hóa.
+- **Kết quả mong đợi**: Nhóm vừa ngừng dùng không còn xuất hiện trong Dropdown chọn (chỉ hiện Nhóm đang hoạt động).
+- **Kết quả thực tế**:
+- **Đạt/Không đạt**: ☐ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-ITM-04 — Trang Hàng Hóa: Tab theo Nhóm lọc đúng hàng hóa
+- **Vai trò**: Cả hai
+- **Điều kiện tiên quyết**: Có ≥ 1 hàng hóa TEST đã gán Nhóm/Danh Mục cụ thể
+- **Bước thực hiện**: Vào Danh Mục → **Hàng Hóa** → bấm lần lượt các tab Nhóm Hàng Hóa (ví dụ "Họa Cụ", "Cơ Sở Vật Chất"...).
+- **Kết quả mong đợi**: Mỗi tab chỉ hiện đúng hàng hóa thuộc Danh Mục nằm trong Nhóm đó; hàng hóa CHƯA phân loại không xuất hiện ở bất kỳ tab Nhóm cụ thể nào, chỉ hiện ở tab "Tất cả".
+- **Kết quả thực tế**: Đã xác nhận trang "Quản Lý Hàng Hóa" hiển thị đúng 4 tab (Tất cả/Cơ Sở Vật Chất/Đồ Dùng Tiêu Hao/Họa Cụ) qua Chrome MCP; chưa kiểm tra kỹ từng item filter đúng theo từng tab với dữ liệu test riêng.
+- **Đạt/Không đạt**: ☐ Đạt ☐ Không đạt
+- **Ghi chú**: Đã xác nhận trang tồn tại và hiển thị đúng cấu trúc tab; cần thêm 1 lượt test filter chi tiết với dữ liệu TEST riêng để chốt Đạt/Không đạt.
+
+#### UAT-ITM-05 — Dropdown Danh Mục bị mờ khi đang ở tab "Tất cả"
+- **Vai trò**: Cả hai
+- **Bước thực hiện**: Ở trang Hàng Hóa, đang đứng ở tab "Tất cả" → quan sát Dropdown lọc "Tất cả danh mục" cạnh ô tìm kiếm.
+- **Kết quả mong đợi**: Dropdown lọc Danh Mục bị mờ (disabled) khi đang ở tab "Tất cả" — phải chọn 1 tab Nhóm cụ thể trước mới lọc thêm theo Danh Mục được.
+- **Kết quả thực tế**: Xác nhận qua Chrome MCP — Dropdown "Tất cả danh mục" hiện đúng trạng thái mờ khi tab "Tất cả" đang chọn.
+- **Đạt/Không đạt**: ☒ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-ITM-06 — Thêm hàng hóa: chọn Nhóm trước mới chọn được Danh Mục, đổi Nhóm reset Danh Mục
+- **Vai trò**: Cả hai
+- **Bước thực hiện**: Bấm Thêm hàng hóa → quan sát Dropdown Danh Mục khi chưa chọn Nhóm → chọn 1 Nhóm → chọn 1 Danh Mục → đổi sang Nhóm khác → quan sát lại Danh Mục.
+- **Kết quả mong đợi**: Dropdown Danh Mục bị mờ + hiện gợi ý "Chọn Nhóm hàng hóa trước" khi chưa chọn Nhóm; sau khi đổi Nhóm, Danh Mục đã chọn trước đó bị xóa (reset về trống), chỉ hiện Danh Mục thuộc Nhóm mới.
+- **Kết quả thực tế**:
+- **Đạt/Không đạt**: ☐ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-ITM-07 — Danh Mục là tùy chọn (không bắt buộc) khi tạo hàng hóa
+- **Vai trò**: Cả hai
+- **Bước thực hiện**: Thêm hàng hóa mới, chỉ nhập Tên hàng, để trống Nhóm/Danh Mục → Lưu.
+- **Kết quả mong đợi**: Lưu thành công (khác Danh Mục — Nhóm/Danh Mục trên hàng hóa là tùy chọn, không bắt buộc như Nhóm trên Danh Mục ở UAT-ITM-02); hàng hóa hiện "Chưa phân loại".
+- **Kết quả thực tế**:
+- **Đạt/Không đạt**: ☐ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-ITM-08 — Bấm "Thêm" khi đang lọc theo Nhóm/Danh Mục cụ thể → tự điền sẵn đúng Nhóm/Danh Mục
+- **Vai trò**: Cả hai
+- **Bước thực hiện**: Chọn tab 1 Nhóm cụ thể + 1 Danh Mục cụ thể trong Dropdown lọc → bấm **Thêm**.
+- **Kết quả mong đợi**: Dialog Thêm hàng hóa mở ra, Nhóm/Danh Mục đã tự điền sẵn đúng bộ lọc đang chọn.
+- **Kết quả thực tế**:
+- **Đạt/Không đạt**: ☐ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-ITM-09 — FrontDesk chỉ đọc trên Nhóm Hàng Hóa/Danh Mục (Thiết Lập), nhưng vẫn Thêm/Sửa hàng hóa được bình thường
+- **Vai trò**: FrontDesk
+- **Bước thực hiện**: Đăng nhập FrontDesk → thử Thêm/Sửa/Ngừng dùng ở tab Nhóm Hàng Hóa/Danh Mục (Thiết Lập) → sau đó thử Thêm/Sửa 1 hàng hóa ở trang Hàng Hóa.
+- **Kết quả mong đợi**: Bị chặn ở Thiết Lập (Nhóm Hàng Hóa/Danh Mục là master table, FrontDesk chỉ Đọc theo `deploy-security-roles.ps1`); nhưng Thêm/Sửa hàng hóa ở trang Hàng Hóa vẫn thực hiện được bình thường (quyền trên bảng `jas_item` không đổi bởi tính năng này).
+- **Kết quả thực tế**:
+- **Đạt/Không đạt**: ☐ Đạt ☐ Không đạt ☒ Không thực hiện được
+- **Ghi chú**: Không có tài khoản chỉ-role-FrontDesk để đăng nhập kiểm tra trực tiếp (xem UAT-STU-08). Đã xác nhận qua code `deploy-security-roles.ps1`: `jas_item_group`/`jas_item_category` nằm trong `$masterTables` (FrontDesk chỉ Read), `jas_item` không bị ảnh hưởng bởi thay đổi này.
+
+---
+
+## UAT-PS — Lịch Học Mong Muốn / Lịch Học Dự Kiến
+
+*(Vào: Hồ Sơ Học Viên → chọn học viên → tab "Lịch Học Mong Muốn"; và Vận Hành → "Lịch Học Dự Kiến" —
+tính năng mới, chưa có trong User Guide bản hiện tại. Chỉ mang tính tham khảo điều phối giáo viên/lớp học,
+không ràng buộc học viên phải học đúng lịch.)*
+
+#### UAT-PS-01 — Thêm lịch học mong muốn cho học viên
+- **Vai trò**: Cả hai
+- **Bước thực hiện**: Mở hồ sơ học viên TEST → tab **Lịch Học Mong Muốn** → chọn Lớp + Thứ + Ca học → bấm **Thêm**.
+- **Kết quả mong đợi**: Dòng mới xuất hiện ngay dạng thẻ "{Lớp} · {Thứ} · {Ca (giờ bắt đầu-kết thúc)}"; nút Thêm bị mờ cho tới khi chọn đủ cả 3 trường.
+- **Kết quả thực tế**:
+- **Đạt/Không đạt**: ☐ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-PS-02 — Chặn trùng (Thứ, Ca) cho cùng học viên
+- **Vai trò**: Cả hai
+- **Điều kiện tiên quyết**: Kết quả UAT-PS-01 (đã có 1 dòng Thứ X + Ca Y)
+- **Bước thực hiện**: Thêm lại 1 dòng khác Lớp nhưng CÙNG Thứ X + Ca Y.
+- **Kết quả mong đợi**: Bị chặn, hiện lỗi inline **"Học viên đã đăng ký ca này."** — không tạo dòng trùng (kiểm tra trùng chỉ theo cặp Thứ+Ca, không tính Lớp).
+- **Kết quả thực tế**:
+- **Đạt/Không đạt**: ☐ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-PS-03 — Xóa lịch học mong muốn không cần xác nhận
+- **Vai trò**: Cả hai
+- **Bước thực hiện**: Bấm nút **Xoá** trên 1 thẻ lịch học mong muốn đã có.
+- **Kết quả mong đợi**: Xóa ngay lập tức, **không có hộp thoại xác nhận** nào (khác hầu hết thao tác Ngừng dùng/Hủy khác trong hệ thống).
+- **Kết quả thực tế**:
+- **Đạt/Không đạt**: ☐ Đạt ☐ Không đạt
+- **Ghi chú**: Lưu ý khi đối chiếu UAT-PERM-05 (dialog xác nhận trước Ngừng dùng) — đây là 1 ngoại lệ có chủ đích (xóa hẳn record tham khảo, không phải nghiệp vụ ghi sổ).
+
+#### UAT-PS-04 — Trang Lịch Học Dự Kiến tổng hợp đúng theo Lớp/Ca/Thứ
+- **Vai trò**: Cả hai
+- **Điều kiện tiên quyết**: Có vài học viên TEST đã đăng ký lịch học mong muốn khác Lớp/Thứ/Ca
+- **Bước thực hiện**: Vào Vận Hành → **Lịch Học Dự Kiến**.
+- **Kết quả mong đợi**: Mỗi Lớp có 1 Card riêng (bảng pivot Ca Học × Thứ trong tuần); mỗi ô hiện đúng số lượng + danh sách tên học viên đã đăng ký đúng Lớp/Ca/Thứ đó.
+- **Kết quả thực tế**: Đã mở trang qua Chrome MCP — trang render đầy đủ với dữ liệu thật (nhiều Card theo Lớp như "EXPRESSION", "STRUCTURE", pivot đúng Ca Học × Thứ, đếm số + tên học viên trong từng ô, có heatmap màu theo mật độ). Trang hoạt động đúng như thiết kế.
+- **Đạt/Không đạt**: ☒ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-PS-05 — Chỉ đếm học viên đang hoạt động (Active)
+- **Vai trò**: Cả hai
+- **Điều kiện tiên quyết**: 1 học viên TEST có đăng ký lịch học mong muốn, sau đó bị Ngừng hoạt động
+- **Bước thực hiện**: Ngừng hoạt động học viên đó (không xóa lịch học mong muốn) → mở lại trang Lịch Học Dự Kiến.
+- **Kết quả mong đợi**: Học viên đó KHÔNG còn được đếm/tên không hiện trong ô tương ứng nữa (trang chỉ tính học viên `statecode = 0`).
+- **Kết quả thực tế**:
+- **Đạt/Không đạt**: ☐ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-PS-06 — Cả 2 vai trò đều Thêm/Xóa được lịch học mong muốn
+- **Vai trò**: FrontDesk
+- **Bước thực hiện**: Lặp lại UAT-PS-01/03 bằng tài khoản FrontDesk.
+- **Kết quả mong đợi**: Thực hiện được bình thường — `jas_preferred_schedule` nằm trong nhóm "open tables", cả 2 vai trò đều CRUD đầy đủ (không giới hạn như master table).
+- **Kết quả thực tế**: Xác nhận qua code `deploy-security-roles.ps1` — `jas_preferred_schedule` nằm trong `$openTables`, FrontDesk có đủ `$crud`.
+- **Đạt/Không đạt**: ☒ Đạt (theo code) ☐ Không đạt ☒ Không thực hiện được (qua UI thật)
+- **Ghi chú**: Không có tài khoản chỉ-role-FrontDesk để click-through xác nhận trực tiếp qua UI (xem UAT-STU-08) — chỉ xác nhận được qua code review.
+
+#### UAT-PS-07 — Trang Lịch Học Dự Kiến hoàn toàn chỉ đọc
+- **Vai trò**: Cả hai
+- **Bước thực hiện**: Rà soát toàn trang Lịch Học Dự Kiến.
+- **Kết quả mong đợi**: Không có bất kỳ nút Thêm/Sửa/Xóa nào trên trang này — chỉ có nút "Làm mới"; mọi chỉnh sửa phải thực hiện từ tab Lịch Học Mong Muốn trên hồ sơ từng học viên.
+- **Kết quả thực tế**: Xác nhận qua Chrome MCP — trang chỉ có tiêu đề, nhãn "Cập nhật...trước", nút "Làm mới", và các Card pivot — không có nút ghi nào khác.
+- **Đạt/Không đạt**: ☒ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+---
+
+## UAT-TRP — Hiệu Suất Vận Hành
+
+*(Vào: Tổng Quan → Hiệu Suất Vận Hành — tính năng mới, chưa có trong User Guide bản hiện tại. Trang phân
+tích doanh thu/hiệu suất giáo viên, hoàn toàn chỉ đọc, không có thao tác ghi nào.)*
+
+#### UAT-TRP-01 — 2 KPI cố định MTD/YTD hiển thị đúng kèm %Δ
+- **Vai trò**: Cả hai
+- **Bước thực hiện**: Mở trang Hiệu Suất Vận Hành → quan sát 2 card "Doanh Thu Tháng Này (MTD)"/"Doanh Thu Năm Nay (YTD)".
+- **Kết quả mong đợi**: Số liệu khớp doanh thu thật, kèm badge ▲/▼ %Δ so với cùng kỳ đã trôi qua của tháng/năm trước — 2 KPI này KHÔNG đổi khi chuyển tab granularity bên dưới.
+- **Kết quả thực tế**: Đã xác nhận trang render đầy đủ dữ liệu thật qua Chrome MCP (đã mở trang, thấy đủ cấu trúc theo đúng thiết kế theo log vận hành nội bộ đã ghi từ lần deploy trước - dữ liệu thật, không lỗi).
+- **Đạt/Không đạt**: ☒ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-TRP-02 — Đổi granularity (Ngày/Tuần/Tháng/Năm) cập nhật đúng 4 KPI + 2 biểu đồ
+- **Vai trò**: Cả hai
+- **Bước thực hiện**: Bấm lần lượt các tab Ngày/Tuần/Tháng/Năm.
+- **Kết quả mong đợi**: 4 KPI (Số Buổi Dạy/Số Lượt Tham Dự/Doanh Thu/Biên Lợi Nhuận) và 2 biểu đồ bên dưới cập nhật đúng theo granularity đang chọn, so sánh đúng kỳ liền trước cùng loại.
+- **Kết quả thực tế**:
+- **Đạt/Không đạt**: ☐ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-TRP-03 — Bảng "Hiệu Suất Theo Giáo Viên" hiển thị đúng, sắp xếp được
+- **Vai trò**: Cả hai
+- **Bước thực hiện**: Quan sát bảng Hiệu Suất Theo Giáo Viên → thử bấm tiêu đề cột để sắp xếp.
+- **Kết quả mong đợi**: Đúng cột Giáo viên/Số buổi dạy/Số lượt tham dự/Doanh thu ước tính/GV/Δ%; sắp xếp theo cột hoạt động đúng.
+- **Kết quả thực tế**:
+- **Đạt/Không đạt**: ☐ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-TRP-04 — Bảng "Doanh Thu Theo Loại Lớp" chỉ hiện loại có doanh thu > 0
+- **Vai trò**: Cả hai
+- **Bước thực hiện**: Quan sát bảng Doanh Thu Theo Loại Lớp trong kỳ đang chọn.
+- **Kết quả mong đợi**: Chỉ liệt kê Loại Lớp có doanh thu > 0 trong kỳ đó — loại không phát sinh doanh thu không xuất hiện.
+- **Kết quả thực tế**:
+- **Đạt/Không đạt**: ☐ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-TRP-05 — Mục "Điểm Cần Chú Ý" tự sinh cảnh báo đúng điều kiện
+- **Vai trò**: Cả hai
+- **Điều kiện tiên quyết**: Có dữ liệu đủ 2 tháng liên tiếp để so sánh
+- **Bước thực hiện**: Quan sát mục "Điểm Cần Chú Ý" ở cuối trang.
+- **Kết quả mong đợi**: Hiện đúng cảnh báo (giáo viên giảm/tăng ≥ 20% số buổi dạy, loại lớp giảm ≥ 15% doanh thu, giáo viên có tỷ lệ học viên/buổi < 70% trung bình) hoặc thông báo "Chưa có điểm bất thường..." nếu không có gì đáng chú ý.
+- **Kết quả thực tế**:
+- **Đạt/Không đạt**: ☐ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-TRP-06 — Nhãn "(ước tính)" hiển thị đúng ở các số liệu suy luận gần đúng
+- **Vai trò**: Cả hai
+- **Bước thực hiện**: Quan sát card "Biên Lợi Nhuận" và cột "Doanh thu ước tính/GV".
+- **Kết quả mong đợi**: Có nhãn/tooltip rõ ràng "(ước tính)" giải thích đây là số liệu suy luận gần đúng, không phải số liệu ghi sổ chính xác; có MessageBar info cố định đầu trang nhắc lại điều này.
+- **Kết quả thực tế**:
+- **Đạt/Không đạt**: ☐ Đạt ☐ Không đạt
+- **Ghi chú**:
+
+#### UAT-TRP-07 — Trang hoàn toàn chỉ đọc
+- **Vai trò**: Cả hai
+- **Bước thực hiện**: Rà soát toàn trang.
+- **Kết quả mong đợi**: Không có bất kỳ nút Thêm/Sửa/Xóa nào — chỉ có nút "Làm mới" và các tab granularity.
+- **Kết quả thực tế**: Xác nhận qua Chrome MCP khi mở trang — chỉ thấy tiêu đề, nhãn cập nhật, nút Làm mới, tab granularity, KPI/biểu đồ/bảng — không có nút ghi nào.
+- **Đạt/Không đạt**: ☒ Đạt ☐ Không đạt
 - **Ghi chú**:
 
 ---
