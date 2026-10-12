@@ -12,7 +12,7 @@
 | [02 — Kiến Trúc & Thiết Kế (Design)](02-design.md) | Người phát triển, quản trị hệ thống | Mô hình dữ liệu, Custom API/Plugin, các trang GenUX, phân quyền |
 | [03 — Hướng Dẫn Sử Dụng (User Guide)](03-user-guide.md) | Nhân viên phụ trách điểm danh / lễ tân, quản lý trung tâm | Hướng dẫn từng nghiệp vụ theo use case, có ảnh chụp luồng thao tác |
 | [04 — Bộ Test Case UAT](04-uat-test-cases.md) | Người kiểm thử nghiệm thu (UAT) | 109 test case theo từng nghiệp vụ + phân quyền, dùng để nghiệm thu trước khi vận hành thật |
-| [LMS — Hướng dẫn sử dụng (hệ thống mới)](lms/README.md) | Quản trị, văn phòng, giáo viên, phụ huynh | Hướng dẫn từng bước kèm ảnh cho hệ thống JoiArt LMS trên nền web, thay thế phiên bản Dataverse mô tả ở trên |
+| [LMS — Tài liệu hệ thống mới](lms/README.md) | Quản trị, văn phòng, giáo viên, phụ huynh | Tổng quan, hướng dẫn từng bước có ảnh theo vai trò (văn phòng, giáo viên, phụ huynh), quy tắc nghiệp vụ và an toàn của hệ thống JoiArt LMS trên nền web, thay thế phiên bản Dataverse mô tả ở trên. Cập nhật tháng 10/2026: đăng nhập bằng link / QR, số buổi cộng từ sổ cái, học thử / học nợ không dùng khóa giả |
 
 ## Hệ thống dùng để làm gì?
 

@@ -1,10 +1,10 @@
 # App phụ huynh / học viên
 
-Ứng dụng web cài lên điện thoại (PWA): `…/parent/`. Dùng cho phụ huynh (PH) và học viên lớn tự đăng nhập. Ảnh chụp ngày 10/10/2026 trên dữ liệu mẫu, khung điện thoại 390×844. **Ứng dụng chỉ đọc**: phụ huynh không sửa được dữ liệu nào.
+Ứng dụng web cài lên điện thoại (PWA): `…/parent/`. Dùng cho phụ huynh (PH) và học viên lớn tự đăng nhập. Ảnh chụp ngày 10/10/2026, khung điện thoại 390×844. **Ứng dụng chỉ đọc**: phụ huynh không sửa được dữ liệu nào.
 
 | Mã | Case | Phút | Ai |
 |---|---|---|---|
-| [P0](#p0--vào-bằng-mã-mời) | Vào bằng mã mời lần đầu | 2 | PH mới |
+| [P0](#p0--vào-bằng-linkqr-của-trung-tâm) | Vào bằng link / mã QR của trung tâm | 2 | PH mới |
 | [P1](#p1--trang-chủ) | Trang chủ: số buổi còn lại, tranh mới, lịch học, nhận xét; nhiều con | 3 | PH |
 | [P2](#p2--thư-viện-tranh) | Thư viện tranh và xem tranh lớn | 2 | PH |
 | [P3](#p3--học-tập) | Khóa học, các buổi đã học, nhận xét | 2 | PH |
@@ -15,25 +15,27 @@ Thứ tự trình bày: P0 → P1 → P2 → P3 → P4 → P5.
 
 ---
 
-### P0 · Vào bằng mã mời
+### P0 · Vào bằng link / mã QR của trung tâm
 
 | Ai | Ứng dụng | Thời lượng |
 |---|---|---|
 | Ba của bé Lý Văn Phát | App phụ huynh | 2 phút |
 
-**Mục tiêu:** phụ huynh tự gắn tài khoản với đúng con của mình, chỉ bằng mã văn phòng gửi.
+**Mục tiêu:** phụ huynh vào đúng dữ liệu của con chỉ bằng link hoặc mã QR do trung tâm gửi: không đăng ký email, không mã xác nhận.
 
-1. Văn phòng tạo mã mời **Phụ huynh** gắn với học viên (A12) và gửi mã. Phụ huynh mở `…/parent/`, đăng ký bằng email → màn **Chào mừng** → nhập mã.
+1. Khi đăng ký học viên, văn phòng đã tạo sẵn tài khoản phụ huynh và gửi link / mã QR (A15). Phụ huynh mở link (hoặc quét QR bằng camera) → vào thẳng trang chủ của con. Thiết bị đó nhớ đăng nhập (180 ngày, tự gia hạn khi dùng).
+2. Cách cũ vẫn còn cho ai đã có tài khoản email: màn **Đăng nhập** có nút "đăng nhập bằng email"; lần đầu nhập **mã mời** (A12). Màn dưới là màn nhập mã mời.
 
 ![P0-1 · Nhập mã mời](img/phu-huynh/p0-1-nhap-ma-moi.jpg)
 
-2. Vào thẳng trang chủ của con.
+3. Vào thẳng trang chủ của con.
 
 ![P0-2 · Vào ứng dụng](img/phu-huynh/p0-2-vao-app.jpg)
 
 **Kết quả đúng**
-- [ ] Mã dùng một lần, chỉ mở được dữ liệu của đúng học viên đã gắn.
-- [ ] Quan hệ (Mẹ, Ba, Ông…) do văn phòng khai khi tạo mã.
+- [ ] Link chỉ mở được dữ liệu của đúng học viên đã gắn; mất điện thoại thì văn phòng tạo lại link và đăng xuất thiết bị cũ (A15).
+- [ ] Link bị xóa khỏi thanh địa chỉ sau khi mở; "Đăng xuất khỏi thiết bị này" ở tab Tôi chỉ đăng xuất thiết bị đó.
+- [ ] Quan hệ (Mẹ, Ba, Ông…) do văn phòng khai khi tạo tài khoản.
 
 ---
 
@@ -78,7 +80,7 @@ Thứ tự trình bày: P0 → P1 → P2 → P3 → P4 → P5.
 <details>
 <summary>Nếu bị hỏi</summary>
 
-- *Lưu ảnh về máy?* Bấm giữ ảnh khi xem lớn. (Chưa có nút tải/chia sẻ riêng.)
+- *Lưu ảnh về máy?* Bấm giữ ảnh khi xem lớn. (Chưa có nút tải/chia sẻ riêng — xem 90-su-co-gioi-han.md.)
 - *Ai khác xem được ảnh?* Đường dẫn ảnh tạo riêng cho từng lần xem và hết hạn sau vài giờ; không có ảnh công khai.
 
 </details>

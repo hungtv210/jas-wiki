@@ -1,10 +1,10 @@
 # App giáo viên
 
-Ứng dụng web cài lên điện thoại (PWA) dành cho giáo viên (G): `…/teacher/`. Ảnh chụp ngày 10/10/2026 trên dữ liệu mẫu, khung điện thoại 390×844. Tên học viên và số buổi trong ảnh chỉ là dữ liệu mẫu.
+Ứng dụng web cài lên điện thoại (PWA) dành cho giáo viên (G): `…/teacher/`. Ảnh chụp ngày 10/10/2026, khung điện thoại 390×844. Tên học viên và số buổi trong ảnh chỉ là dữ liệu mẫu.
 
 | Mã | Case | Phút | Ai |
 |---|---|---|---|
-| [T0](#t0--vào-bằng-mã-mời) | Vào bằng mã mời lần đầu | 2 | G mới |
+| [T0](#t0--vào-bằng-linkqr-hoặc-mã-mời) | Vào bằng link / QR (hoặc mã mời) lần đầu | 2 | G mới |
 | [T1](#t1--hôm-nay) | Màn hình **Hôm nay**: các ca học | 1 | G |
 | [T2](#t2--học-viên-trong-ca) | Học viên trong ca: chỉ thấy bạn đã được văn phòng điểm danh | 2 | G |
 | [T3](#t3--chụp-tranh-của-học-viên) | Chụp tranh của học viên | 3 | G |
@@ -16,15 +16,19 @@ Thứ tự trình bày: T0 → T1 → T2 → T3 → T4 → T5 → T6.
 
 ---
 
-### T0 · Vào bằng mã mời
+### T0 · Vào bằng link / QR (hoặc mã mời)
 
 | Ai | Ứng dụng | Thời lượng |
 |---|---|---|
 | Cô Như Quỳnh (G mới) | App giáo viên | 2 phút |
 
-**Mục tiêu:** giáo viên tự gắn tài khoản của mình với hồ sơ giáo viên mà văn phòng đã tạo, chỉ bằng mã mời.
+**Mục tiêu:** giáo viên vào đúng hồ sơ giáo viên mà văn phòng đã tạo, không cần đăng ký email.
 
-1. Quản trị tạo mã mời cho giáo viên (A12) và gửi mã. Giáo viên mở `…/teacher/`, đăng ký/đăng nhập bằng email → màn **Chào mừng**.
+**Cách chính:** văn phòng vào **Người dùng & mời → Tài khoản giáo viên (link / QR)** (A15), chọn giáo viên, gửi link hoặc cho quét mã QR. Giáo viên mở link một lần trên điện thoại là vào thẳng ứng dụng, thiết bị nhớ đăng nhập.
+
+**Cách phụ (đã có tài khoản email):**
+
+1. Quản trị tạo mã mời cho giáo viên (A12) và gửi mã. Giáo viên mở `…/teacher/` → **Đăng nhập bằng email** → màn **Chào mừng**.
 
 ![T0-1 · Nhập mã mời](img/giao-vien/t0-1-nhap-ma-moi.jpg)
 
@@ -44,7 +48,7 @@ Thứ tự trình bày: T0 → T1 → T2 → T3 → T4 → T5 → T6.
 <summary>Nếu bị hỏi</summary>
 
 - *Cài như app?* Chrome Android: menu **⋮** → **Thêm vào màn hình chính**; iPhone Safari: **Chia sẻ** → **Thêm vào MH chính**. Không cần App Store.
-- *Mất điện thoại?* Quản trị khóa tài khoản trong **Người dùng & mã mời**; người dùng đăng nhập trên máy mới bằng mã mời mới.
+- *Mất điện thoại?* Văn phòng bấm **Tạo lại link / QR** ở **Người dùng & mời** (đăng xuất luôn thiết bị cũ) và gửi link mới. Với tài khoản email: khóa tài khoản rồi cấp lại.
 
 </details>
 
